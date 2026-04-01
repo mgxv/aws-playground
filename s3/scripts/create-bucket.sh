@@ -1,0 +1,25 @@
+#!/usr/bin/env bash
+
+if [ -z "$1" ]; then
+  echo "Usage: $0 <bucket-name>"
+  exit 1
+fi
+
+# Disable auto-prompt
+export AWS_CLI_AUTO_PROMPT=off
+
+ACCOUNT_ID=$(aws sts get-caller-identity --query Account --output text)
+echo "Account ID: $ACCOUNT_ID"
+
+REGION=$(aws configure get region)
+echo "Region: $REGION"
+
+BUCKET_NAME="${1}-${ACCOUNT_ID}-${REGION}-an"
+echo "Creating bucket: $BUCKET_NAME"
+
+aws s3api create-bucket --bucket "$BUCKET_NAME" --bucket-namespace account-regional
+
+# Re-enable auto-prompt
+export AWS_CLI_AUTO_PROMPT=on
+
+echo "Done!"
