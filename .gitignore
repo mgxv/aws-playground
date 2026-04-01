@@ -9,6 +9,11 @@
 .idea/**/dictionaries
 .idea/**/shelf
 
+# User created files
+temp/
+random-files.sh
+clear-history.sh
+
 # AWS User-specific
 .idea/**/aws.xml
 
