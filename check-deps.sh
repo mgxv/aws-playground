@@ -54,4 +54,11 @@ else
   error "terraform"
 fi
 
+# Pulumi
+if command -v pulumi &>/dev/null; then
+  success "pulumi" "$(pulumi version)"
+else
+  error "pulumi"
+fi
+
 echo "─────────────────────────────────────────────"

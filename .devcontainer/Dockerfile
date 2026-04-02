@@ -36,3 +36,7 @@ RUN apt-get update \
     && apt-get install -y --no-install-recommends terraform \
     && apt-get clean \
     && rm -rf /var/lib/apt/lists/*
+
+# Install Pulumi
+RUN curl -fsSL https://get.pulumi.com | sh \
+    && mv /root/.pulumi/bin/pulumi /usr/local/bin/pulumi
