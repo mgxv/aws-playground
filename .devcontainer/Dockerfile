@@ -45,7 +45,7 @@ RUN curl -fsSL https://get.pulumi.com | sh \
 
 # Install Pulumi Python runtime
 RUN apt-get update \
-    && apt-get install -y --no-install-recommends python3-pip \
+    && apt-get install -y --no-install-recommends python3-pip python3.12-venv \
     && pip install pulumi pulumi-aws --break-system-packages \
     && apt-get clean \
     && rm -rf /var/lib/apt/lists/*
