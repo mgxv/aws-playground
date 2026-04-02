@@ -4,9 +4,16 @@
         "context": ".",
         "dockerfile": "Dockerfile"
     },
+    "features": {
+        "ghcr.io/devcontainers/features/sshd:1": {}
+    },
     "mounts": [
-        "source=${localEnv:HOME}/.aws,target=/root/.aws,type=bind,consistency=cached"
+        "source=${localEnv:HOME}/.aws,target=/home/vscode/.aws,type=bind,consistency=cached",
+        "source=${localEnv:HOME}/.ssh,target=/home/vscode/.ssh,type=bind,consistency=cached"
     ],
+    "remoteEnv": {
+        "SSH_AUTH_SOCK": "${localEnv:SSH_AUTH_SOCK}"
+    },
     "customizations": {
         "vscode": {
         "extensions": [
