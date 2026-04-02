@@ -17,6 +17,8 @@ RUN ARCH=$(uname -m | sed 's/x86_64/amd64/;s/aarch64/arm64/') \
     && tar -C /usr/local -xzf go.tar.gz \
     && rm go.tar.gz
 
+ENV PATH="/usr/local/go/bin:${PATH}"
+
 # Install Node.js (LTS) and AWS CDK CLI
 RUN curl -fsSL https://deb.nodesource.com/setup_lts.x | bash - \
     && apt-get install -y --no-install-recommends nodejs \
@@ -39,7 +41,7 @@ RUN apt-get update \
 
 # Install Pulumi
 RUN curl -fsSL https://get.pulumi.com | sh \
-    && mv /root/.pulumi/bin/pulumi /usr/local/bin/pulumi
+    && mv /root/.pulumi/bin/* /usr/local/bin/
 
 # Install Pulumi Python runtime
 RUN apt-get update \
