@@ -61,4 +61,11 @@ else
   error "pulumi"
 fi
 
+# Python
+if command -v python3 &>/dev/null; then
+  success "python3" "$(python3 --version)"
+else
+  error "python3"
+fi
+
 echo "─────────────────────────────────────────────"
