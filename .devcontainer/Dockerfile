@@ -19,14 +19,16 @@ RUN ARCH=$(uname -m | sed 's/x86_64/amd64/;s/aarch64/arm64/') \
 
 ENV PATH="/usr/local/go/bin:${PATH}"
 
-# Install Node.js (LTS) and AWS CDK CLI
+# Install Node.js (LTS)
 RUN curl -fsSL https://deb.nodesource.com/setup_lts.x | bash - \
     && apt-get install -y --no-install-recommends nodejs \
-    && npm install -g aws-cdk \
     && apt-get clean \
     && rm -rf /var/lib/apt/lists/*
 
-    # Install Terraform
+# Install AWS CDK CLI
+RUN npm install -g aws-cdk
+
+# Install Terraform
 RUN apt-get update \
     && apt-get install -y --no-install-recommends gnupg software-properties-common \
     && wget -O- https://apt.releases.hashicorp.com/gpg | \
@@ -43,9 +45,17 @@ RUN apt-get update \
 RUN curl -fsSL https://get.pulumi.com | sh \
     && mv /root/.pulumi/bin/* /usr/local/bin/
 
-# Install Pulumi Python runtime
+# Install Pulumi Python runtime dependencies
 RUN apt-get update \
     && apt-get install -y --no-install-recommends python3-pip python3.12-venv \
-    && pip install pulumi pulumi-aws --break-system-packages \
+    && apt-get clean \
+    && rm -rf /var/lib/apt/lists/*
+
+# Install Pulumi Python packages
+RUN pip install pulumi pulumi-aws --break-system-packages
+
+# Install jq
+RUN apt-get update \
+    && apt-get install -y --no-install-recommends jq \
     && apt-get clean \
     && rm -rf /var/lib/apt/lists/*
