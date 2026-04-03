@@ -1,0 +1,416 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>CORS Demo ✨</title>
+
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Nunito:ital,wght@0,400;0,700;0,800;0,900;1,700&family=Fredoka+One&display=swap" rel="stylesheet">
+
+    <link rel="icon" href="./favicon.ico" type="image/x-icon">
+
+    <style>
+      :root {
+        --sky: #e0f2ff;
+        --pink: #ffb6c1;
+        --yellow: #ffe066;
+        --mint: #b5ead7;
+        --lavender: #c9b8f5;
+        --coral: #ff6f61;
+        --ink: #2d2250;
+        --card-bg: #ffffff;
+        --shadow: #2d2250;
+      }
+
+      * { box-sizing: border-box; margin: 0; padding: 0; }
+
+      body {
+        font-family: 'Nunito', sans-serif;
+        background-color: var(--sky);
+        background-image:
+          radial-gradient(circle at 15% 20%, #ffd6e7 0%, transparent 35%),
+          radial-gradient(circle at 85% 75%, #d4f1f9 0%, transparent 35%),
+          radial-gradient(circle at 50% 90%, #e8d5fb 0%, transparent 30%);
+        min-height: 100vh;
+        color: var(--ink);
+        overflow-x: hidden;
+      }
+
+      /* Floating blobs */
+      .blob {
+        position: fixed;
+        border-radius: 50%;
+        opacity: 0.25;
+        filter: blur(40px);
+        pointer-events: none;
+        z-index: 0;
+      }
+      .blob-1 { width: 300px; height: 300px; background: var(--pink);    top: -80px;  left: -80px;  animation: drift 8s ease-in-out infinite alternate; }
+      .blob-2 { width: 250px; height: 250px; background: var(--lavender); bottom: -60px; right: -60px; animation: drift 10s ease-in-out infinite alternate-reverse; }
+      .blob-3 { width: 180px; height: 180px; background: var(--yellow);  top: 40%;  left: 5%;   animation: drift 7s ease-in-out infinite alternate; }
+
+      @keyframes drift {
+        from { transform: translate(0, 0) scale(1); }
+        to   { transform: translate(30px, 20px) scale(1.05); }
+      }
+
+      /* Floating stars/shapes in background */
+      .deco {
+        position: fixed;
+        pointer-events: none;
+        z-index: 0;
+        font-size: 1.4rem;
+        opacity: 0.18;
+        animation: floaty 5s ease-in-out infinite alternate;
+      }
+      .deco:nth-child(1) { top: 10%; left: 8%;  animation-delay: 0s;   font-size: 1.8rem; }
+      .deco:nth-child(2) { top: 20%; right: 10%; animation-delay: 1s; }
+      .deco:nth-child(3) { top: 60%; left: 5%;  animation-delay: 2s;   font-size: 1rem; }
+      .deco:nth-child(4) { top: 75%; right: 8%; animation-delay: 0.5s; font-size: 2rem; }
+      .deco:nth-child(5) { top: 45%; right: 5%; animation-delay: 1.5s; font-size: 1.1rem; }
+
+      @keyframes floaty {
+        from { transform: translateY(0px) rotate(-5deg); }
+        to   { transform: translateY(-12px) rotate(5deg); }
+      }
+
+      /* Main layout */
+      main {
+        position: relative;
+        z-index: 1;
+        min-height: 100vh;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 3rem 1.5rem;
+      }
+
+      .container {
+        max-width: 520px;
+        width: 100%;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 1.5rem;
+        padding-bottom: 8px;
+        padding-right: 6px;
+      }
+
+      /* Badge pill */
+      .pill {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.4rem;
+        background: white;
+        border: 2px solid var(--shadow);
+        border-radius: 999px;
+        padding: 0.35rem 1rem;
+        font-size: 0.72rem;
+        font-weight: 800;
+        letter-spacing: 0.08em;
+        text-transform: uppercase;
+        color: var(--ink);
+        box-shadow: 2px 2px 0 var(--shadow);
+        animation: popIn 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275) both;
+      }
+
+      /* Headline */
+      .headline {
+        font-family: 'Fredoka One', cursive;
+        font-size: clamp(3rem, 10vw, 5rem);
+        line-height: 1.05;
+        text-align: center;
+        color: var(--ink);
+        animation: popIn 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275) 0.1s both;
+      }
+
+      .headline .pop {
+        color: var(--coral);
+        display: inline-block;
+        animation: wobble 3s ease-in-out infinite;
+      }
+
+      @keyframes wobble {
+        0%, 100% { transform: rotate(-2deg); }
+        50%       { transform: rotate(2deg); }
+      }
+
+      /* Card */
+      .card {
+        width: 100%;
+        background: var(--card-bg);
+        border: 2.5px solid var(--shadow);
+        border-radius: 20px;
+        padding: 2rem;
+        box-shadow: 5px 5px 0 var(--shadow);
+        display: flex;
+        flex-direction: column;
+        gap: 1.25rem;
+        transition: transform 0.2s ease, box-shadow 0.2s ease;
+        animation: popIn 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275) 0.2s both;
+      }
+
+      .card:hover {
+        transform: translate(-2px, -2px);
+        box-shadow: 7px 7px 0 var(--shadow);
+      }
+
+      @keyframes popIn {
+        from { opacity: 0; transform: scale(0.85) translateY(16px); }
+        to   { opacity: 1; transform: scale(1) translateY(0); }
+      }
+
+      /* Card header row */
+      .card-header {
+        display: flex;
+        align-items: center;
+        gap: 0.6rem;
+      }
+
+      .card-icon {
+        width: 38px;
+        height: 38px;
+        background: var(--yellow);
+        border: 2px solid var(--shadow);
+        border-radius: 10px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 1.2rem;
+        flex-shrink: 0;
+        box-shadow: 2px 2px 0 var(--shadow);
+      }
+
+      .card-title {
+        font-family: 'Fredoka One', cursive;
+        font-size: 1.15rem;
+        color: var(--ink);
+      }
+
+      /* Fact text area */
+      .fact-bubble {
+        background: var(--sky);
+        border: 2px solid var(--shadow);
+        border-radius: 14px;
+        padding: 1rem 1.25rem;
+        font-size: 1rem;
+        line-height: 1.6;
+        font-weight: 700;
+        color: var(--ink);
+        min-height: 80px;
+        transition: opacity 0.3s ease;
+        word-break: break-word;
+        overflow-wrap: break-word;
+      }
+
+      .fact-bubble.loading-text {
+        opacity: 0.4;
+        font-style: italic;
+        font-weight: 400;
+      }
+
+      /* Card footer */
+      .card-footer {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        gap: 1rem;
+        flex-wrap: wrap;
+      }
+
+      /* Button */
+      .fetch-btn {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.5rem;
+        background: var(--coral);
+        color: white;
+        font-family: 'Fredoka One', cursive;
+        font-size: 1rem;
+        letter-spacing: 0.02em;
+        border: 2.5px solid var(--shadow);
+        border-radius: 999px;
+        padding: 0.6rem 1.4rem;
+        cursor: pointer;
+        box-shadow: 3px 3px 0 var(--shadow);
+        transition: transform 0.15s ease, box-shadow 0.15s ease, background 0.15s ease;
+        flex-shrink: 0;
+      }
+
+      .fetch-btn:hover {
+        transform: translate(-1px, -1px);
+        box-shadow: 5px 5px 0 var(--shadow);
+        background: #ff5248;
+      }
+
+      .fetch-btn:active {
+        transform: translate(2px, 2px);
+        box-shadow: 1px 1px 0 var(--shadow);
+      }
+
+      .fetch-btn:disabled {
+        opacity: 0.55;
+        cursor: not-allowed;
+        transform: none;
+        box-shadow: 3px 3px 0 var(--shadow);
+      }
+
+      .fetch-btn .btn-emoji {
+        display: inline-block;
+        transition: transform 0.3s ease;
+      }
+
+      .fetch-btn:not(:disabled):hover .btn-emoji {
+        transform: rotate(20deg) scale(1.2);
+      }
+
+      /* Spinner */
+      .spinner {
+        width: 16px;
+        height: 16px;
+        border: 2.5px solid rgba(255,255,255,0.35);
+        border-top-color: white;
+        border-radius: 50%;
+        animation: spin 0.7s linear infinite;
+        display: none;
+        flex-shrink: 0;
+      }
+
+      .fetch-btn.loading .spinner    { display: block; }
+      .fetch-btn.loading .btn-text   { opacity: 0.75; }
+      .fetch-btn.loading .btn-emoji  { display: none; }
+
+      @keyframes spin { to { transform: rotate(360deg); } }
+
+      /* CORS badge */
+      .cors-badge {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.4rem;
+        background: var(--mint);
+        border: 2px solid var(--shadow);
+        border-radius: 999px;
+        padding: 0.3rem 0.85rem;
+        font-size: 0.72rem;
+        font-weight: 800;
+        letter-spacing: 0.06em;
+        text-transform: uppercase;
+        color: var(--ink);
+        box-shadow: 2px 2px 0 var(--shadow);
+        opacity: 0;
+        transform: scale(0.8);
+        transition: opacity 0.3s ease, transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+      }
+
+      .cors-badge.visible {
+        opacity: 1;
+        transform: scale(1);
+      }
+
+      .cors-dot {
+        width: 7px;
+        height: 7px;
+        border-radius: 50%;
+        background: #16a34a;
+        flex-shrink: 0;
+        animation: pulse-dot 2s ease infinite;
+      }
+
+      @keyframes pulse-dot {
+        0%, 100% { opacity: 1; transform: scale(1); }
+        50%       { opacity: 0.5; transform: scale(0.75); }
+      }
+
+      /* Footer note */
+      .footer-note {
+        font-size: 0.72rem;
+        font-weight: 700;
+        color: var(--ink);
+        opacity: 0.4;
+        text-align: center;
+        letter-spacing: 0.05em;
+        animation: popIn 0.5s ease 0.4s both;
+      }
+    </style>
+  </head>
+  <body>
+
+    <!-- Background blobs -->
+    <div class="blob blob-1"></div>
+    <div class="blob blob-2"></div>
+    <div class="blob blob-3"></div>
+
+    <!-- Decorative floating emojis -->
+    <span class="deco">☁️</span>
+    <span class="deco">⭐</span>
+    <span class="deco">🌸</span>
+    <span class="deco">✨</span>
+    <span class="deco">🌈</span>
+
+    <main>
+      <div class="container">
+
+        <span class="pill">🌐 Cross-Origin Resource Sharing</span>
+
+        <h1 class="headline">fetch across<br><span class="pop">origins!</span></h1>
+
+        <div class="card">
+          <div class="card-header">
+            <div class="card-icon">💡</div>
+            <span class="card-title">Random Fun Fact</span>
+          </div>
+
+          <div class="fact-bubble" id="fact-text">
+            Hit the button below — a cross-origin request will fetch a random fact and prove your CORS setup is working! 🎉
+          </div>
+
+          <div class="card-footer">
+            <button class="fetch-btn" id="fact-btn" onclick="fetchFact()">
+              <div class="spinner"></div>
+              <span class="btn-emoji">🎲</span>
+              <span class="btn-text">Fetch a fact!</span>
+            </button>
+
+            <span class="cors-badge" id="cors-badge">
+              <span class="cors-dot"></span>
+              CORS OK!
+            </span>
+          </div>
+        </div>
+
+        <p class="footer-note">☁️ Hosted on AWS S3 · 2026</p>
+
+      </div>
+    </main>
+
+    <script>
+      async function fetchFact() {
+        const btn = document.getElementById('fact-btn');
+        const factText = document.getElementById('fact-text');
+        const corsBadge = document.getElementById('cors-badge');
+
+        btn.classList.add('loading');
+        btn.disabled = true;
+        factText.classList.add('loading-text');
+        factText.textContent = 'Fetching from a remote origin… ✨';
+
+        try {
+          const res = await fetch('https://uselessfacts.jsph.pl/api/v2/facts/random?language=en');
+          const data = await res.json();
+          factText.textContent = data.text;
+          corsBadge.classList.add('visible');
+        } catch (err) {
+          factText.textContent = '😬 Request failed! CORS may not be configured correctly — check the browser console.';
+          corsBadge.classList.remove('visible');
+          console.error(err);
+        } finally {
+          factText.classList.remove('loading-text');
+          btn.classList.remove('loading');
+          btn.disabled = false;
+        }
+      }
+    </script>
+  </body>
+</html>
