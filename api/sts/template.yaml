@@ -1,0 +1,35 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Description: A simple AWS CloudFormation template to create an S3 bucket and IAM role.
+
+Resources:
+  MyBucket:
+    Type: AWS::S3::Bucket
+    Properties:
+      BucketName: !Sub "sts-demo-${AWS::AccountId}-${AWS::Region}"
+
+  StsRole:
+    Type: AWS::IAM::Role
+    Properties:
+      AssumeRolePolicyDocument:
+        Version: "2012-10-17"
+        Statement:
+          - Effect: Allow
+            Principal:
+              AWS:
+                - !Sub "arn:aws:iam::${AWS::AccountId}:user/sts-machine-user"
+            Action:
+              - sts:AssumeRole
+      Path: "/"
+      Policies:
+        - PolicyName: s3AccessPolicy
+          PolicyDocument:
+            Version: "2012-10-17"
+            Statement:
+              - Effect: Allow
+                Action: "s3:*"
+                Resource:
+                  - !Sub "arn:aws:s3:::sts-demo-${AWS::AccountId}-${AWS::Region}"
+                  - !Sub "arn:aws:s3:::sts-demo-${AWS::AccountId}-${AWS::Region}/*"
+              - Effect: Allow
+                Action: "s3:ListAllMyBuckets"
+                Resource: "*"
