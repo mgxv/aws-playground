@@ -11,6 +11,9 @@ RUN apt-get update \
     && apt-get clean \
     && rm -rf /var/lib/apt/lists/*
 
+# Configure AWS CLI
+ENV AWS_CLI_AUTO_PROMPT=on
+
 # Install latest stable Go
 RUN ARCH=$(uname -m | sed 's/x86_64/amd64/;s/aarch64/arm64/') \
     && curl -fsSL "https://go.dev/dl/$(curl -fsSL https://go.dev/VERSION?m=text | head -1).linux-${ARCH}.tar.gz" -o go.tar.gz \
