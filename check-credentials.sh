@@ -19,6 +19,8 @@ else
   fail "github" "SSH authentication failed"
 fi
 
+export AWS_CLI_AUTO_PROMPT=off
+
 # AWS credentials
 if aws sts get-caller-identity &>/dev/null; then
   ACCOUNT=$(aws sts get-caller-identity --query Account --output text)
@@ -30,5 +32,7 @@ if aws sts get-caller-identity &>/dev/null; then
 else
   fail "aws creds" "no credentials found"
 fi
+
+export AWS_CLI_AUTO_PROMPT=on
 
 echo "─────────────────────────────────────────────"
