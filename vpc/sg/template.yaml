@@ -1,0 +1,114 @@
+AWSTemplateFormatVersion: "2010-09-09"
+Description: "AWS CloudFormation Template: EC2 Instance with Apache web server"
+
+Parameters:
+  VPCID:
+    Type: String
+    Description: "The VPC ID where the EC2 instance will be launched."
+  ImageId:
+    Type: String
+    Default: "ami-02f986bab3de34d0d"
+    Description: "The AMI ID for the EC2 instance."
+  SubnetId:
+    Type: String
+    Description: "The Subnet ID where the EC2 instance will be launched."
+  InstanceName:
+    Type: String
+    Default: "MyEC2Instance"
+    Description: "The name of the EC2 instance."
+
+Resources:
+
+  # =============================================================================
+  # IAM ROLE
+  # Grants the EC2 instance permission to use AWS Systems Manager Session Manager.
+  # AmazonSSMManagedInstanceCore is the AWS managed policy that provides the
+  # minimum permissions needed for SSM to manage the instance.
+  # =============================================================================
+  SSMRole:
+    Type: AWS::IAM::Role
+    Properties:
+      RoleName: "EC2SSMRole"
+      AssumeRolePolicyDocument:
+        Version: "2012-10-17"
+        Statement:
+          - Effect: Allow
+            Principal:
+              Service: ec2.amazonaws.com
+            Action: sts:AssumeRole
+      ManagedPolicyArns:
+        - arn:aws:iam::aws:policy/AmazonSSMManagedInstanceCore
+
+  # =============================================================================
+  # INSTANCE PROFILE
+  # An IAM Instance Profile is the container that passes an IAM Role to an EC2
+  # instance. You cannot attach an IAM Role directly to an EC2 instance —
+  # it must be wrapped in an Instance Profile first.
+  # =============================================================================
+  SSMInstanceProfile:
+    Type: AWS::IAM::InstanceProfile
+    Properties:
+      InstanceProfileName: "EC2SSMInstanceProfile"
+      Roles:
+        - !Ref SSMRole
+
+  # =============================================================================
+  # EC2 INSTANCE
+  # Uses NetworkInterfaces to assign a public IPv4 address automatically.
+  # AssociatePublicIpAddress: true enables a public IPv4 so the instance
+  # is reachable from the internet without needing IPv6.
+  # IamInstanceProfile attaches the SSM role for Session Manager access.
+  # UserData installs and starts Apache on first boot.
+  # =============================================================================
+  MyEC2Instance:
+    Type: AWS::EC2::Instance
+    Properties:
+      ImageId: !Ref ImageId
+      InstanceType: "t3.micro"
+      IamInstanceProfile: !Ref SSMInstanceProfile
+      Tags:
+        - Key: Name
+          Value: !Ref InstanceName
+      NetworkInterfaces:
+        - DeviceIndex: "0"
+          SubnetId: !Ref SubnetId
+          GroupSet:
+            - !GetAtt SecurityGroups.GroupId
+          AssociatePublicIpAddress: true
+      UserData:
+        Fn::Base64: |
+          #!/bin/bash
+          # Update all packages
+          dnf update -y
+
+          # Install Apache web server
+          dnf install -y httpd
+
+          # Start Apache and enable it to start on boot
+          systemctl start httpd
+          systemctl enable httpd
+
+          # Write a simple test page so you can verify Apache is running
+          echo "<h1>Hello from $(hostname)</h1>" > /var/www/html/index.html
+
+  # =============================================================================
+  # SECURITY GROUP
+  # Controls inbound and outbound traffic for the EC2 instance.
+  # IPv4 only — allows all traffic in and out.
+  # Tighten rules for production use.
+  # =============================================================================
+  SecurityGroups:
+    Type: AWS::EC2::SecurityGroup
+    Properties:
+      GroupDescription: "Allow all traffic"
+      VpcId: !Ref VPCID
+      SecurityGroupIngress:
+        - IpProtocol: -1
+          FromPort: -1
+          ToPort: -1
+          CidrIp: "0.0.0.0/0"
+      SecurityGroupEgress:
+        - IpProtocol: -1
+          FromPort: -1
+          ToPort: -1
+          CidrIp: "0.0.0.0/0"
