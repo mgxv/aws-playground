@@ -64,7 +64,7 @@ aws cloudformation deploy \
   --template-file template.yaml \
   --stack-name sts-stack \
   --capabilities CAPABILITY_IAM \
-  --region us-east-1 \
+  --region us-east-2 \
   --profile sts-machine-user
 ```
 
@@ -116,12 +116,12 @@ Delete the CloudFormation stack to remove the S3 bucket and IAM role:
 ```sh
 aws cloudformation delete-stack \
   --stack-name sts-stack \
-  --region us-east-1 \
+  --region us-east-2 \
   --profile sts-machine-user
 
 aws cloudformation wait stack-delete-complete \
   --stack-name sts-stack \
-  --region us-east-1 \
+  --region us-east-2 \
   --profile sts-machine-user
 ```
 

@@ -7,7 +7,7 @@ Parameters:
     Description: "The VPC ID where the EC2 instance will be launched."
   ImageId:
     Type: String
-    Default: "ami-01b14b7ad41e17ba4"
+    Default: "ami-02f986bab3de34d0d"
     Description: "The AMI ID for the EC2 instance."
   SubnetId:
     Type: String

@@ -8,8 +8,6 @@ Host a static website on S3 with public read access and cross-origin resource su
 - [`jq`](https://stedolan.github.io/jq/) installed for JSON formatting
 - IAM permissions for S3 (`s3:CreateBucket`, `s3:PutBucketPolicy`, `s3:PutBucketWebsite`, etc.)
 
-> **Note:** If you are outside `us-east-1`, append `--create-bucket-configuration LocationConstraint=$(aws configure get region)` to the create-bucket command.
-
 ---
 
 ## Files
@@ -28,7 +26,7 @@ Host a static website on S3 with public read access and cross-origin resource su
 ```sh
 aws s3api create-bucket \
   --bucket "demo-$(aws sts get-caller-identity --query Account --output text)-$(aws configure get region)-an" \
-  --bucket-namespace account-regional
+  --create-bucket-configuration LocationConstraint=$(aws configure get region)
 ```
 
 ### 2. Disable Block Public Access

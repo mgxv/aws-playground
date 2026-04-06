@@ -15,7 +15,7 @@ chmod +x generate-policy.sh
 **Example:**
 ```sh
 ./generate-policy.sh demo
-# Creates policy for: demo-123456789012-us-east-1-an
+# Creates policy for: demo-123456789012-us-east-2-an
 ```
 
 ---
@@ -69,7 +69,7 @@ aws s3api get-bucket-policy \
 |---|---|---|
 | `<name>` | `demo` | Your chosen prefix |
 | `<account-id>` | `123456789012` | AWS account ID |
-| `<region>` | `us-east-1` | Configured AWS region |
+| `<region>` | `us-east-2` | Configured AWS region |
 | `-an` | `-an` | Fixed suffix |
 
-**Full example:** `demo-123456789012-us-east-1-an`
+**Full example:** `demo-123456789012-us-east-2-an`

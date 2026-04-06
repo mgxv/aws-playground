@@ -105,7 +105,7 @@ chmod u+x create-vpc.sh delete-vpc.sh
 Expected output:
 ```
 Account ID:          123456789012
-Region:              us-east-1
+Region:              us-east-2
 Creating VPC...
 VPC ID:              vpc-0xxxxxxxxxxxxxxxxx
 Enabling DNS hostnames on VPC...
@@ -124,7 +124,7 @@ Adding internet route to route table...
 VPC setup complete!
 =============================
 Account ID:          123456789012
-Region:              us-east-1
+Region:              us-east-2
 VPC ID:              vpc-0xxxxxxxxxxxxxxxxx
 IGW ID:              igw-0xxxxxxxxxxxxxxxxx
 Subnet ID:           subnet-0xxxxxxxxxxxxxxxxx
@@ -144,7 +144,7 @@ Expected output:
 VPC cleanup complete!
 =============================
 Account ID:          123456789012
-Region:              us-east-1
+Region:              us-east-2
 VPC ID:              vpc-0xxxxxxxxxxxxxxxxx  ✓ deleted
 IGW ID:              igw-0xxxxxxxxxxxxxxxxx  ✓ deleted
 Subnet ID:           subnet-0xxxxxxxxxxxxxxxxx  ✓ deleted

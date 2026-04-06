@@ -17,7 +17,9 @@ echo "Region: $REGION"
 BUCKET_NAME="${1}-${ACCOUNT_ID}-${REGION}-an"
 echo "Creating bucket: $BUCKET_NAME"
 
-aws s3api create-bucket --bucket "$BUCKET_NAME" --bucket-namespace account-regional
+aws s3api create-bucket \
+  --bucket "$BUCKET_NAME" \
+  --create-bucket-configuration LocationConstraint="$REGION"
 
 # Re-enable auto-prompt
 export AWS_CLI_AUTO_PROMPT=on

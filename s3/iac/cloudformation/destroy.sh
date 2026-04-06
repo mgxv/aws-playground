@@ -27,7 +27,7 @@ ACCOUNT_ID=$(aws sts get-caller-identity --query Account --output text)
 echo "Account ID: $ACCOUNT_ID"
 
 REGION=$(aws configure get region || true)
-REGION=${REGION:-us-east-1}  # fallback if not configured
+REGION=${REGION:-us-east-2}  # fallback if not configured
 echo "Region: $REGION"
 
 # ─────────────────────────────────────────────

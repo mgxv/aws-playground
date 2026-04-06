@@ -114,8 +114,8 @@ aws ec2 attach-internet-gateway \
 # 4. CREATE PUBLIC SUBNET
 # Description: Creates a subnet with CIDR 172.1.1.0/24, which provides
 #              256 IPs (172.1.1.0 - 172.1.1.255). AWS reserves 5 of these,
-#              leaving 251 usable IPs. Pinned to us-east-1a to ensure
-#              t3.micro availability — us-east-1e does not support t3.micro.
+#              leaving 251 usable IPs. Pinned to us-east-2a to ensure
+#              t3.micro availability — us-east-2e does not support t3.micro.
 # =============================================================================
 
 echo "Creating public subnet..."

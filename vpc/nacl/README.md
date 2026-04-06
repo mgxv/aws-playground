@@ -45,10 +45,10 @@ Deploy an EC2 instance running Apache inside a custom VPC, then explore how Netw
 Creates:
 - VPC `172.1.0.0/16` tagged `MyVPC`
 - Internet Gateway `MyIGW`, attached to the VPC
-- Public subnet `172.1.1.0/24` in `us-east-1a` tagged `MyPublicSubnet`
+- Public subnet `172.1.1.0/24` in `us-east-2a` tagged `MyPublicSubnet`
 - Default route `0.0.0.0/0 → IGW` in the main route table
 
-> **Note:** The subnet is pinned to `us-east-1a` because `t3.micro` is not available in `us-east-1e`.
+> **Note:** The subnet is pinned to `us-east-2a` because `t3.micro` is not available in `us-east-2e`.
 
 ---
 

@@ -22,7 +22,7 @@
     ```bash
     pulumi new aws-python
     ```
- 2. Follow the prompts to set your project name and AWS region (default: `us-east-1`).
+ 2. Follow the prompts to set your project name and AWS region (default: `us-east-2`).
  3. Change into your project directory:
     ```bash
     cd <project-name>
@@ -56,7 +56,7 @@
 
  - `aws:region` (string)
    The AWS region to deploy resources into.
-   Default: `us-east-1`
+   Default: `us-east-2`
 
  View or update configuration with:
  ```bash
