@@ -25,7 +25,7 @@ Host a static website on S3 with public read access and cross-origin resource su
 ### 1. Create the Bucket
 ```sh
 aws s3api create-bucket \
-  --bucket "demo-$(aws sts get-caller-identity --query Account --output text)-$(aws configure get region)-an" \
+  --bucket "demo-$(aws sts get-caller-identity --query Account --output text)-$(aws configure get region)" \
   --create-bucket-configuration LocationConstraint=$(aws configure get region)
 ```
 
@@ -34,7 +34,7 @@ aws s3api create-bucket \
 Allows the bucket policy to grant public read access.
 ```sh
 aws s3api put-public-access-block \
-  --bucket "demo-$(aws sts get-caller-identity --query Account --output text)-$(aws configure get region)-an" \
+  --bucket "demo-$(aws sts get-caller-identity --query Account --output text)-$(aws configure get region)" \
   --public-access-block-configuration \
     '{"BlockPublicAcls": true, "IgnorePublicAcls": true, "BlockPublicPolicy": false, "RestrictPublicBuckets": false}'
 ```
@@ -49,14 +49,14 @@ Generate `policy.json`:
 Apply it:
 ```sh
 aws s3api put-bucket-policy \
-  --bucket "demo-$(aws sts get-caller-identity --query Account --output text)-$(aws configure get region)-an" \
+  --bucket "demo-$(aws sts get-caller-identity --query Account --output text)-$(aws configure get region)" \
   --policy file://policy.json
 ```
 
 Verify:
 ```sh
 aws s3api get-bucket-policy \
-  --bucket "demo-$(aws sts get-caller-identity --query Account --output text)-$(aws configure get region)-an" \
+  --bucket "demo-$(aws sts get-caller-identity --query Account --output text)-$(aws configure get region)" \
   --query Policy \
   --output text | jq .
 ```
@@ -64,7 +64,7 @@ aws s3api get-bucket-policy \
 ### 4. Enable Static Website Hosting
 ```sh
 aws s3api put-bucket-website \
-  --bucket "demo-$(aws sts get-caller-identity --query Account --output text)-$(aws configure get region)-an" \
+  --bucket "demo-$(aws sts get-caller-identity --query Account --output text)-$(aws configure get region)" \
   --website-configuration file://website.json
 ```
 
@@ -78,14 +78,14 @@ aws s3api put-bucket-website \
 
 ### 5. Upload Files
 ```sh
-aws s3 cp index.html s3://demo-$(aws sts get-caller-identity --query Account --output text)-$(aws configure get region)-an
+aws s3 cp index.html s3://demo-$(aws sts get-caller-identity --query Account --output text)-$(aws configure get region)
 ```
 
 ### 6. Open the Website
 
 Print the endpoint URL and open it in your browser:
 ```sh
-echo "http://demo-$(aws sts get-caller-identity --query Account --output text)-$(aws configure get region)-an.s3-website-$(aws configure get region).amazonaws.com"
+echo "http://demo-$(aws sts get-caller-identity --query Account --output text)-$(aws configure get region).s3-website-$(aws configure get region).amazonaws.com"
 ```
 
 ---

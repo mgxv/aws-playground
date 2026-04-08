@@ -38,7 +38,7 @@ func run(ctx context.Context, baseName string) error {
 	}
 
 	region := cfg.Region
-	bucketName := fmt.Sprintf("%s-%s-%s-an", baseName, accountID, region)
+	bucketName := fmt.Sprintf("%s-%s-%s", baseName, accountID, region)
 
 	fmt.Printf("Are you sure you want to nuke %s? (y/n): ", bucketName)
 	scanner := bufio.NewScanner(os.Stdin)

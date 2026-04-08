@@ -15,7 +15,7 @@ echo "Account ID: $ACCOUNT_ID"
 REGION=$(aws configure get region)
 echo "Region: $REGION"
 
-BUCKET_NAME="${2}-${ACCOUNT_ID}-${REGION}-an"
+BUCKET_NAME="${2}-${ACCOUNT_ID}-${REGION}"
 echo "Syncing $SOURCE_DIR to bucket: $BUCKET_NAME"
 
 aws s3 sync "$SOURCE_DIR" s3://"$BUCKET_NAME"

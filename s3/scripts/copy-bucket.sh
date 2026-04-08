@@ -13,8 +13,8 @@ echo "Account ID: $ACCOUNT_ID"
 REGION=$(aws configure get region)
 echo "Region: $REGION"
 
-SOURCE_BUCKET="${1}-${ACCOUNT_ID}-${REGION}-an"
-DEST_BUCKET="${2}-${ACCOUNT_ID}-${REGION}-an"
+SOURCE_BUCKET="${1}-${ACCOUNT_ID}-${REGION}"
+DEST_BUCKET="${2}-${ACCOUNT_ID}-${REGION}"
 
 echo "Copying from: $SOURCE_BUCKET"
 echo "Copying to: $DEST_BUCKET"

@@ -9,7 +9,7 @@ export AWS_CLI_AUTO_PROMPT=off
 
 ACCOUNT_ID=$(aws sts get-caller-identity --query Account --output text)
 REGION=$(aws configure get region)
-BUCKET_NAME="${1}-${ACCOUNT_ID}-${REGION}-an"
+BUCKET_NAME="${1}-${ACCOUNT_ID}-${REGION}"
 
 POLICY=$(cat <<EOF
 {

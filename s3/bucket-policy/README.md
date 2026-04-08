@@ -1,6 +1,6 @@
 # S3 Bucket Setup
 
-Scripts to create an S3 bucket and apply a bucket policy with a dynamically generated name in the format: `<name>-<account-id>-<region>-an`.
+Scripts to create an S3 bucket and apply a bucket policy with a dynamically generated name in the format: `<name>-<account-id>-<region>`.
 
 ---
 
@@ -15,7 +15,7 @@ chmod +x generate-policy.sh
 **Example:**
 ```sh
 ./generate-policy.sh demo
-# Creates policy for: demo-123456789012-us-east-2-an
+# Creates policy for: demo-123456789012-us-east-2
 ```
 
 ---
@@ -23,7 +23,7 @@ chmod +x generate-policy.sh
 ## 2. Create the Bucket
 ```sh
 aws s3api create-bucket \
-  --bucket "demo-$(aws sts get-caller-identity --query Account --output text)-$(aws configure get region)-an" \
+  --bucket "demo-$(aws sts get-caller-identity --query Account --output text)-$(aws configure get region)" \
   --bucket-namespace account-regional
 ```
 
@@ -32,7 +32,7 @@ aws s3api create-bucket \
 ## 3. Apply the Bucket Policy
 ```sh
 aws s3api put-bucket-policy \
-  --bucket "demo-$(aws sts get-caller-identity --query Account --output text)-$(aws configure get region)-an" \
+  --bucket "demo-$(aws sts get-caller-identity --query Account --output text)-$(aws configure get region)" \
   --policy file://policy.json
 ```
 
@@ -41,7 +41,7 @@ aws s3api put-bucket-policy \
 ## 4. Get the Bucket Policy
 ```sh
 aws s3api get-bucket-policy \
-  --bucket "demo-$(aws sts get-caller-identity --query Account --output text)-$(aws configure get region)-an" \
+  --bucket "demo-$(aws sts get-caller-identity --query Account --output text)-$(aws configure get region)" \
   --query Policy \
   --output text | jq .
 ```
@@ -51,13 +51,13 @@ aws s3api get-bucket-policy \
 ## 5. Delete the Bucket Policy
 ```sh
 aws s3api delete-bucket-policy \
-  --bucket "demo-$(aws sts get-caller-identity --query Account --output text)-$(aws configure get region)-an"
+  --bucket "demo-$(aws sts get-caller-identity --query Account --output text)-$(aws configure get region)"
 ```
 
 Verify the policy was removed:
 ```sh
 aws s3api get-bucket-policy \
-  --bucket "demo-$(aws sts get-caller-identity --query Account --output text)-$(aws configure get region)-an"
+  --bucket "demo-$(aws sts get-caller-identity --query Account --output text)-$(aws configure get region)"
 # Expected: NoSuchBucketPolicy error confirming deletion
 ```
 
@@ -70,6 +70,5 @@ aws s3api get-bucket-policy \
 | `<name>` | `demo` | Your chosen prefix |
 | `<account-id>` | `123456789012` | AWS account ID |
 | `<region>` | `us-east-2` | Configured AWS region |
-| `-an` | `-an` | Fixed suffix |
 
-**Full example:** `demo-123456789012-us-east-2-an`
+**Full example:** `demo-123456789012-us-east-2`

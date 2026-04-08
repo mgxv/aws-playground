@@ -14,7 +14,7 @@ echo "Account ID: $ACCOUNT_ID"
 REGION=$(aws configure get region)
 echo "Region: $REGION"
 
-BUCKET_NAME="${1}-${ACCOUNT_ID}-${REGION}-an"
+BUCKET_NAME="${1}-${ACCOUNT_ID}-${REGION}"
 OBJECT_KEY="$2"
 DEST="./$(basename "$OBJECT_KEY")"
 echo "Downloading s3://$BUCKET_NAME/$OBJECT_KEY to $DEST"

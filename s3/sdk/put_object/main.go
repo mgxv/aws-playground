@@ -36,7 +36,7 @@ func run(ctx context.Context, baseName, filePath string) error {
 	}
 
 	region := cfg.Region
-	bucketName := fmt.Sprintf("%s-%s-%s-an", baseName, accountID, region)
+	bucketName := fmt.Sprintf("%s-%s-%s", baseName, accountID, region)
 	key := filepath.Base(filePath)
 	fmt.Printf("Account: %s | Region: %s\n", accountID, region)
 	fmt.Printf("Uploading %s to bucket: %s (key: %s)\n", filePath, bucketName, key)

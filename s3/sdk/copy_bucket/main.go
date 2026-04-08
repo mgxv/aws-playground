@@ -35,8 +35,8 @@ func run(ctx context.Context, srcBase, dstBase string) error {
 	}
 
 	region := cfg.Region
-	srcBucket := fmt.Sprintf("%s-%s-%s-an", srcBase, accountID, region)
-	dstBucket := fmt.Sprintf("%s-%s-%s-an", dstBase, accountID, region)
+	srcBucket := fmt.Sprintf("%s-%s-%s", srcBase, accountID, region)
+	dstBucket := fmt.Sprintf("%s-%s-%s", dstBase, accountID, region)
 	fmt.Printf("Account: %s | Region: %s\n", accountID, region)
 	fmt.Printf("Copying from: %s\n", srcBucket)
 	fmt.Printf("Copying to:   %s\n", dstBucket)

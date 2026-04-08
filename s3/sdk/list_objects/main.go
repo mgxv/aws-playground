@@ -35,7 +35,7 @@ func run(ctx context.Context, baseName string) error {
 	}
 
 	region := cfg.Region
-	bucketName := fmt.Sprintf("%s-%s-%s-an", baseName, accountID, region)
+	bucketName := fmt.Sprintf("%s-%s-%s", baseName, accountID, region)
 	fmt.Printf("Account: %s | Region: %s\n", accountID, region)
 	fmt.Printf("Listing objects in bucket: %s\n", bucketName)
 

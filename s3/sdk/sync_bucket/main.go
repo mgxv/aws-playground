@@ -36,7 +36,7 @@ func run(ctx context.Context, sourceDir, baseName string) error {
 	}
 
 	region := cfg.Region
-	bucketName := fmt.Sprintf("%s-%s-%s-an", baseName, accountID, region)
+	bucketName := fmt.Sprintf("%s-%s-%s", baseName, accountID, region)
 	fmt.Printf("Account: %s | Region: %s\n", accountID, region)
 	fmt.Printf("Syncing %s to bucket: %s\n", sourceDir, bucketName)
 

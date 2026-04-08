@@ -14,7 +14,7 @@ echo "Account ID: $ACCOUNT_ID"
 REGION=$(aws configure get region)
 echo "Region: $REGION"
 
-BUCKET_NAME="${1}-${ACCOUNT_ID}-${REGION}-an"
+BUCKET_NAME="${1}-${ACCOUNT_ID}-${REGION}"
 echo "Creating bucket: $BUCKET_NAME"
 
 aws s3api create-bucket \

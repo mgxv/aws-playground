@@ -13,7 +13,7 @@ echo "Account ID: $ACCOUNT_ID"
 REGION=$(aws configure get region)
 echo "Region: $REGION"
 
-BUCKET_NAME="${1}-${ACCOUNT_ID}-${REGION}-an"
+BUCKET_NAME="${1}-${ACCOUNT_ID}-${REGION}"
 
 read -p "Are you sure you want to nuke $BUCKET_NAME? (y/n): " CONFIRM
 CONFIRM=$(echo "$CONFIRM" | tr '[:upper:]' '[:lower:]')
