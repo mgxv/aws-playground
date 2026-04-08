@@ -3,10 +3,10 @@
 package_update: true
 package_upgrade: true
 packages:
-  - httpd
+  - nginx
 
 write_files:
-  - path: /var/www/html/index.html
+  - path: /usr/share/nginx/html/index.html
     content: |
       <!DOCTYPE html>
       <html>
@@ -15,12 +15,12 @@ write_files:
       </head>
       <body>
           <h1>Hello, World!</h1>
-          <p>This is a custom HTML page served from my Apache server on EC2.</p>
+          <p>This is a custom HTML page served from my Nginx server on EC2.</p>
       </body>
       </html>
     owner: root:root
     permissions: '0644'
+
 runcmd:
-  - systemctl start httpd.service
-  - systemctl enable httpd.service
-  - systemctl restart httpd.service
+  - systemctl enable nginx.service
+  - systemctl restart nginx.service
