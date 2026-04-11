@@ -12,7 +12,7 @@ PGPASSWORD="$DB_PASSWORD" psql \
   "host=$CLUSTER_ENDPOINT port=5432 dbname=$DB_NAME user=$DB_USER sslmode=require" \
   -c "SELECT version();" \
   -c "SELECT current_database(), current_user;" \
-  -c "\l"
+  -c "\q"
 
 echo ""
 echo "✅ Connection successful!"
