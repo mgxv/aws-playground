@@ -75,4 +75,11 @@ else
   error "pulumi-py"
 fi
 
+# psql
+if command -v psql &>/dev/null; then
+  success "psql" "$(psql --version)"
+else
+  error "psql"
+fi
+
 echo "─────────────────────────────────────────────"
